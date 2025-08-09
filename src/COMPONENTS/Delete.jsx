@@ -5,40 +5,45 @@ const Delete=()=>{
 
     const handledelete=(e)=>{
         e.preventDefault();
-        if(!id){
-            alert("please enter the id")
-        }
         const confirm=window.confirm("are you sure")
         if(!confirm) return;
 
         fetch(`http://localhost:5000/del/${id}`,{
-            method:'DELETE'
+            method:"DELETE"
         })
         .then((response)=>{
             if(!response.ok){
-                throw new Error("Faild to fetch the data")
+                if(response.status===500){
+                    alert("Empty data")
+                    setid("")
+                }
+                else if(response.status===404){
+                    alert("Error in this code")
+                }
+                return ;
             }
-            alert(`sucessfully id ${id} deleted`)
+            alert("sucessfully deleted ")
+            setid("")
         })
-        .catch((error)=>{
-            alert("record may not exist")
+        .catch((err)=>{
+            alert("something went wrong"+err)
             setid("")
         })
     }
     return(
         <div>
-            <form onSubmit={handledelete} className="form">
+            <form onSubmit={handledelete}>
                 <input 
                 type="number"
                 name="id"
-                placeholder="Enter the id "
                 value={id}
+                placeholder="Enter the id"
                 onChange={(e)=>setid(e.target.value)}
+                required
                 />
                 <button type="submit">DELETE</button>
             </form>
         </div>
     )
 }
-
 export default Delete;

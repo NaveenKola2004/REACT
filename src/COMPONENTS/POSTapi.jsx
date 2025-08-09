@@ -12,48 +12,59 @@ const AddUser=()=>{
             [e.target.name]:e.target.value
         }))
     }
-    const handlesubmit=async(e)=>{
+    const handlesubmit=async (e)=>{
         e.preventDefault();
 
         if(!formdata.id||!formdata.name){
-            alert("Fill the all data")
+            alert("Enter the data")
+        return ;
         }
-        try{
-            const res=await fetch("http://localhost:5000/data/add",{
-                method:'POST',
-                headers:{
-                    'content-type':'application/json'
-                },
-                body:JSON.stringify(formdata)
-            })
-            const data=await res.json()
-            alert("sucessfully entred the data")
-            setformdata({id:'',name:''})
+
+        const res=await fetch("http://localhost:5000/data/add",{
+            method:"POST",
+            headers:{
+                'content-Type':'application/json'
+            },
+            body:JSON.stringify(formdata)
+        })
+        if(!res.ok){
+            if(res.status===409){
+                alert("duplicate entry")
+            }
+            else if(res.status===500){
+                alert("error")
+            }
+            return res.json();
         }
-        catch(error){
-            alert("something went wrong")
-        }
+        const data=await res.json()
+        alert("sucessfully entred")
+        setformdata({id:"",name:""})
+        .catch((error)=>{
+            alert("something went wrong"+error)
+            setformdata({id:"",name:""})
+        })
     }
 
     return(
-        <form onSubmit={handlesubmit} className="form">
-            <input 
+        <form onSubmit={handlesubmit}>
+            <input
             type="number"
             name="id"
-            placeholder="Enter the id"
             value={formdata.id}
+            placeholder="enter the id"
             onChange={handlechange}
+            required
             />
-            <input 
+            <input
             type="text"
             name="name"
-            placeholder="Enter the name"
             value={formdata.name}
+            placeholder="enter the id"
             onChange={handlechange}
+            required
             />
             <button type="submit">Add</button>
         </form>
     )
 }
-
 export default AddUser;

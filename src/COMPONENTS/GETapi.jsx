@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react"
 import './table.css'
-const Data_Display=()=>{
+const Data_display=()=>{
   const[data,setdata]=useState([])
   const[loading,setloading]=useState(true)
   const[error,seterror]=useState(null)
 
-  useEffect(()=>{
+  useState(()=>{
     fetch("http://localhost:5000/data")
     .then((response)=>{
       if(!response.ok){
@@ -22,10 +22,8 @@ const Data_Display=()=>{
       setloading(false)
     })
   },[])
-
-  if(loading) return <p>LOADING.....</p>
-  if(error) return <p>ERROR {error}</p>
-
+  if(loading) return <p>LOADING......</p>
+  if(error) return <p>Error : {error}</p>
   return(
     <table>
       <thead>
@@ -45,5 +43,4 @@ const Data_Display=()=>{
     </table>
   )
 }
-
-export default Data_Display;
+export default Data_display;
