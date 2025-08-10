@@ -1,9 +1,10 @@
 import { useState } from "react";
-import './form.css'
+
+
 const AddUser=()=>{
-    const [formdata,setformdata]=useState({
-        id:'',
-        name:''
+    const[formdata,setformdata]=useState({
+        id:"",
+        name:""
     })
 
     const handlechange=(e)=>{
@@ -12,13 +13,8 @@ const AddUser=()=>{
             [e.target.name]:e.target.value
         }))
     }
-    const handlesubmit=async (e)=>{
+    const handlesubmit=async(e)=>{
         e.preventDefault();
-
-        if(!formdata.id||!formdata.name){
-            alert("Enter the data")
-        return ;
-        }
 
         const res=await fetch("http://localhost:5000/data/add",{
             method:"POST",
@@ -30,40 +26,39 @@ const AddUser=()=>{
         if(!res.ok){
             if(res.status===409){
                 alert("duplicate entry")
+                setformdata({id:"",name:""})
             }
-            else if(res.status===500){
-                alert("error")
+            else{
+                alert("error to add data")
             }
-            return res.json();
+            return;
         }
         const data=await res.json()
-        alert("sucessfully entred")
+        alert("sucessfully added data")
         setformdata({id:"",name:""})
         .catch((error)=>{
-            alert("something went wrong"+error)
-            setformdata({id:"",name:""})
+            alert(`something went wrong ${error}`)
         })
     }
 
     return(
         <form onSubmit={handlesubmit}>
-            <input
+            <input 
             type="number"
             name="id"
             value={formdata.id}
-            placeholder="enter the id"
+            placeholder="Enter the id"
             onChange={handlechange}
             required
             />
-            <input
+            <input 
             type="text"
             name="name"
             value={formdata.name}
-            placeholder="enter the id"
+            placeholder="Enter the name"
             onChange={handlechange}
-            required
             />
-            <button type="submit">Add</button>
+            <button type="submit">ADD</button>
         </form>
     )
 }

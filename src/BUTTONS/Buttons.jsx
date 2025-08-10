@@ -1,27 +1,28 @@
 import { act, useState } from "react";
-import './button.css'
-import Data_display from "../COMPONENTS/GETapi";
-import AddUser from "../COMPONENTS/POSTapi";
-import Delete from "../COMPONENTS/Delete";
-import Find from "../COMPONENTS/Find";
-
-export function Buttons(){
-    const[activepage,setactivepage]=useState("buttons")
-
+import Data_Display from "../Components/GET";
+import AddUser from "../Components/POST";
+import DELETE from "../COMPONENTS/Delete";
+import FIND from "../COMPONENTS/Find";
+import Update from "../Components/UPDATE";
+function Buttons(){
+    const[activepage,setactivepage]=useState("home")
     return(
-        <>
-        <div  className="button-group">
-            <button onClick={()=>{setactivepage("data")}}>DATA</button>
-            <button onClick={()=>{setactivepage("add")}}>ADD DATA</button>
-            <button onClick={()=>{setactivepage("delete")}}>DELETE</button>
-            <button onClick={()=>{setactivepage("find")}}>Find</button>
+        <div>
+            <div>
+                <button onClick={()=>setactivepage("data")}>DATA</button>
+                <button onClick={()=>setactivepage("add")}>ADD DATA</button>
+                <button onClick={()=>setactivepage("del")}>DELETE</button>
+                <button onClick={()=>setactivepage("find")}>FIND</button>
+                <button onClick={()=>setactivepage("update")}>UPDATE</button>
             </div>
-            <div className="content-area">
-            {activepage==="add"&&<AddUser />}
-            {activepage==="data"&&<Data_display />}
-            {activepage==="delete"&&<Delete />}
-            {activepage==="find"&&<Find />}
+            <div>
+                {activepage==="data"&&<Data_Display />}
+                {activepage==="add"&&<AddUser />}
+                {activepage==="del"&&<DELETE />}
+                {activepage==="find"&&<FIND />}
+                {activepage==="update"&&<Update />}
             </div>
-        </>
+        </div>
     )
 }
+export default Buttons;

@@ -1,0 +1,13 @@
+table,tr,th,td{
+    border: 2px solid rgb(0, 0, 0);
+    border-collapse: collapse;
+    background-color: pink;
+    margin: 20px 400px;
+    padding: 10px 50px;
+    height: 10px;
+    width: 50px;
+}
+
+th:hover{
+    background-color: blue;
+}

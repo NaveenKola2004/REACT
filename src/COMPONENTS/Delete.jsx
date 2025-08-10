@@ -1,12 +1,12 @@
 import { useState } from "react";
-import './form.css'
-const Delete=()=>{
+
+const DELETE=()=>{
     const[id,setid]=useState("")
 
     const handledelete=(e)=>{
         e.preventDefault();
-        const confirm=window.confirm("are you sure")
-        if(!confirm) return;
+
+        const confirm=window.confirm("ARE YOU SURE")
 
         fetch(`http://localhost:5000/del/${id}`,{
             method:"DELETE"
@@ -14,19 +14,26 @@ const Delete=()=>{
         .then((response)=>{
             if(!response.ok){
                 if(response.status===500){
-                    alert("Empty data")
+                    alert("empty data")
                     setid("")
                 }
                 else if(response.status===404){
-                    alert("Error in this code")
+                    alert("Faild to delete")
+                    setid("")
                 }
-                return ;
+                else{
+                    alert("check data once")
+                }
+                throw new Error("deleted faild")
             }
-            alert("sucessfully deleted ")
-            setid("")
+            return response.json()
         })
-        .catch((err)=>{
-            alert("something went wrong"+err)
+        .then(()=>{
+        alert("sucessfully deleted")
+        setid("")
+        })
+        .catch((error)=>{
+            alert("something went wrong")
             setid("")
         })
     }
@@ -34,16 +41,17 @@ const Delete=()=>{
         <div>
             <form onSubmit={handledelete}>
                 <input 
-                type="number"
-                name="id"
-                value={id}
-                placeholder="Enter the id"
-                onChange={(e)=>setid(e.target.value)}
-                required
+               type="number"
+               id="id"
+               value={id}
+               placeholder="Enter the id"
+               required
+               onChange={(e)=>setid(e.target.value)}
                 />
                 <button type="submit">DELETE</button>
             </form>
         </div>
     )
 }
-export default Delete;
+
+export default DELETE;
